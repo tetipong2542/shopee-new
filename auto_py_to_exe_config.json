@@ -1,0 +1,160 @@
+{
+  "version": "auto-py-to-exe-configuration_v1",
+  "pyinstallerOptions": [
+    {
+      "optionDest": "noconfirm",
+      "value": true
+    },
+    {
+      "optionDest": "filenames",
+      "value": "main.py"
+    },
+    {
+      "optionDest": "onefile",
+      "value": true
+    },
+    {
+      "optionDest": "console",
+      "value": false
+    },
+    {
+      "optionDest": "icon_file",
+      "value": ""
+    },
+    {
+      "optionDest": "disable_windowed_traceback",
+      "value": false
+    },
+    {
+      "optionDest": "target_architecture",
+      "value": "64bit"
+    },
+    {
+      "optionDest": "codesign_identity",
+      "value": ""
+    },
+    {
+      "optionDest": "entitlements_file",
+      "value": ""
+    },
+    {
+      "optionDest": "uac_admin",
+      "value": false
+    },
+    {
+      "optionDest": "uac_uiaccess",
+      "value": false
+    },
+    {
+      "optionDest": "argv_emulation",
+      "value": false
+    },
+    {
+      "optionDest": "strip",
+      "value": false
+    },
+    {
+      "optionDest": "upx_dir",
+      "value": ""
+    },
+    {
+      "optionDest": "upx_exclude",
+      "value": []
+    },
+    {
+      "optionDest": "runtime_tmpdir",
+      "value": ""
+    },
+    {
+      "optionDest": "bootloader_ignore_signals",
+      "value": false
+    },
+    {
+      "optionDest": "distpath",
+      "value": "dist"
+    },
+    {
+      "optionDest": "workpath",
+      "value": "build"
+    },
+    {
+      "optionDest": "specpath",
+      "value": ""
+    },
+    {
+      "optionDest": "additional_imports",
+      "value": [
+        "flask",
+        "pywebview",
+        "pywebview.platforms.webview",
+        "pywebview.platforms.cocoa",
+        "pywebview.platforms.winforms",
+        "pywebview.platforms.gtk",
+        "jinja2",
+        "werkzeug",
+        "itsdangerous",
+        "click",
+        "blinker",
+        "markupsafe",
+        "bottle",
+        "proxy_tools"
+      ]
+    },
+    {
+      "optionDest": "hidden_imports",
+      "value": []
+    },
+    {
+      "optionDest": "collect_submodules",
+      "value": []
+    },
+    {
+      "optionDest": "collect_data_files",
+      "value": []
+    },
+    {
+      "optionDest": "collect_binaries",
+      "value": []
+    },
+    {
+      "optionDest": "exclude_modules",
+      "value": []
+    },
+    {
+      "optionDest": "exclude_binaries",
+      "value": []
+    },
+    {
+      "optionDest": "exclude_datas",
+      "value": []
+    },
+    {
+      "optionDest": "exclude_hiddenimports",
+      "value": []
+    },
+    {
+      "optionDest": "runtime_hooks",
+      "value": []
+    },
+    {
+      "optionDest": "hooks",
+      "value": []
+    },
+    {
+      "optionDest": "additional_hooks_dirs",
+      "value": []
+    },
+    {
+      "optionDest": "key",
+      "value": ""
+    },
+    {
+      "optionDest": "name",
+      "value": "ShopeeLinkConverter"
+    }
+  ],
+  "nonPyinstallerOptions": {
+    "increaseRecursionLimit": true,
+    "manualArguments": ""
+  }
+}

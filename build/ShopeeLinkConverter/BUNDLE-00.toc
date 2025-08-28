@@ -1,0 +1,3 @@
+([('ShopeeLinkConverter',
+   '/Users/pond-dev/Documents/shopee-new/dist/ShopeeLinkConverter',
+   'EXECUTABLE')],)

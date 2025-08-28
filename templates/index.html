@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vnix - Shopee Link Converter - แปลงลิงค์ Shopee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-blue-dark: #1e40af;
+            --primary-blue-light: #60a5fa;
+            --accent-blue: #1d4ed8;
+            --glass-bg: rgb(0 0 0 / 53%);
+            --glass-bg-hover: rgb(0 0 0 / 45%);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --glass-shadow-strong: rgba(0, 0, 0, 0.5);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-white: #ffffff;
+            --blur-light: blur(10px);
+            --blur-medium: blur(20px);
+            --blur-strong: blur(40px);
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-image: url('https://img2.pic.in.th/pic/bgaf48760ab60a8d3c.webp');
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            backdrop-filter: var(--blur-light);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.77), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Animated Background */
+        .background {
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .shape {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .shape:first-child {
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(147, 197, 253, 0.2), rgba(219, 234, 254, 0.1));
+            left: -80px;
+            top: -80px;
+            animation: float 6s ease-in-out infinite;
+            backdrop-filter: blur(40px);
+        }
+
+        .shape:last-child {
+            background: linear-gradient(to right, rgba(30, 64, 175, 0.3), rgba(96, 165, 250, 0.2));
+            right: -80px;
+            bottom: -80px;
+            animation: float 8s ease-in-out infinite reverse;
+            backdrop-filter: blur(40px);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab-btn:hover:before {
+            left: 100%;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(96, 165, 250, 0.3));
+            color: var(--text-white);
+            box-shadow: 0 8px 32px var(--glass-shadow);
+            transform: translateY(-2px);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            backdrop-filter: blur(25px);
+        }
+
+        .tab-btn.active i {
+            color: var(--text-white);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* Cards */
+        .form-card, .result-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px var(--glass-shadow), 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-white);
+        }
+
+        .form-card h2 {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h2 i {
+            color: var(--primary-blue);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-white);
+        }
+
+        .input-group label i {
+            color: var(--primary-blue);
+        }
+
+        .input-group textarea {
+            width: 100%;
+            padding: 16px 22px;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.05);
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px var(--glass-shadow), 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+            backdrop-filter: blur(10px);
+        }
+
+        .help-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .help-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        button {
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: var(--text-white);
+            box-shadow: 0 4px 20px var(--glass-shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px var(--glass-shadow), 0 4px 12px rgba(59, 130, 246, 0.2);
+            background: linear-gradient(135deg, var(--primary-blue-light), var(--primary-blue));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.9), rgba(147, 197, 253, 0.8));
+            color: var(--text-white);
+            box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(96, 165, 250, 0.4);
+            background: linear-gradient(135deg, rgba(147, 197, 253, 0.9), rgba(219, 234, 254, 0.8));
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Loading Modal */
+        .loading-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10003;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .loading-modal.show {
+            display: flex;
+        }
+
+        .loading-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px var(--glass-shadow);
+            max-width: 400px;
+            width: 90%;
+            animation: bounceIn 0.6s ease;
+        }
+
+        .loading-icon {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(59, 130, 246, 0.2);
+            border-top: 6px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 30px var(--glass-shadow);
+        }
+
+        .loading-title {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-blue-light));
+            height: 100%;
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-text {
+            color: var(--text-white);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .loading-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .step.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .step.completed {
+            color: #27ae60;
+        }
+
+        /* Toast Modal */
+        .toast-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            z-index: 10002;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: modalFadeIn 0.4s ease forwards;
+        }
+
+        .toast-modal.show {
+            display: block;
+        }
+
+        .toast-modal.success {
+            border-color: rgba(46, 204, 113, 0.5);
+            box-shadow: 0 20px 60px rgba(46, 204, 113, 0.2);
+        }
+
+        .toast-modal.error {
+            border-color: rgba(231, 76, 60, 0.5);
+            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.2);
+        }
+
+        .toast-modal.info {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
+        }
+
+        .toast-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .toast-modal.success .toast-icon {
+            color: #27ae60;
+        }
+
+        .toast-modal.error .toast-icon {
+            color: #e74c3c;
+        }
+
+        .toast-modal.info .toast-icon {
+            color: var(--primary-blue);
+        }
+
+        .toast-title {
+            color: var(--text-white);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .toast-message {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .toast-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .toast-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .toast-btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: var(--text-white);
+        }
+
+        .toast-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .toast-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 9998;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: block;
+        }
+
+        /* Toast Modal Overlay */
+        .toast-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10001;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .toast-modal-overlay.show {
+            display: block;
+        }
+
+        /* Old Loading (keep for compatibility) */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+        }
+
+        .loading.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px var(--glass-shadow);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .card-header {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h3 i {
+            color: var(--primary-blue);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--primary-blue-dark), var(--primary-blue-dark));
+            color: var(--text-white);
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px var(--glass-shadow);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .data-table th:hover {
+            background: linear-gradient(135deg, var(--primary-blue-light), var(--accent-blue));
+            box-shadow: 0 4px 16px var(--glass-shadow);
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            vertical-align: middle;
+            color: var(--text-white);
+        }
+
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.08);
+            backdrop-filter: blur(5px);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .data-table tbody tr:nth-child(even):hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .data-table tbody tr.success {
+            background: rgba(46, 204, 113, 0.05) !important;
+            border-left: 3px solid #27ae60;
+        }
+
+        .data-table tbody tr.success:hover {
+            background: rgba(46, 204, 113, 0.1) !important;
+        }
+
+        .data-table tbody tr.error {
+            background: rgba(231, 76, 60, 0.05) !important;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .data-table tbody tr.error:hover {
+            background: rgba(231, 76, 60, 0.1) !important;
+        }
+
+        .link-cell {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-cell a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-cell a:hover {
+            color: var(--primary-blue-light);
+            text-decoration: underline;
+        }
+
+        .link-cell span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .status-error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            color: var(--text-white);
+            padding: 18px 24px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px var(--glass-shadow), 0 4px 16px rgba(59, 130, 246, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: rgba(239, 68, 68, 0.9);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+        }
+
+        .toast.success {
+            background: rgba(34, 197, 94, 0.9);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .footer i {
+            color: #e74c3c;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .logo i {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                justify-content: center;
+            }
+            
+            .form-card, .result-card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .form-card, .result-card {
+                padding: 15px;
+            }
+            
+            .input-group textarea {
+                padding: 12px 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-link"></i>
+            </div>
+            <h1>Vnix - Shopee Link Converter</h1>
+            <p class="subtitle">แปลงลิงค์ Shopee จากรูปแบบยาวเป็นรูปแบบสั้นอย่างรวดเร็ว</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('converter')">
+                <i class="fas fa-exchange-alt"></i>
+                แปลงลิงค์
+            </button>
+            <button class="tab-btn" onclick="showTab('about')">
+                <i class="fas fa-info-circle"></i>
+                เกี่ยวกับ
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Converter Tab -->
+            <div id="converter" class="tab-content active">
+                <!-- Input Form -->
+                <div class="form-card">
+                    <h2><i class="fas fa-edit"></i> ใส่ลิงค์ Shopee ที่ต้องการแปลง</h2>
+                    
+                    <div class="input-group">
+                        <label for="links">
+                            <i class="fas fa-link"></i>
+                            ลิงค์ Shopee (ใส่หลายลิงค์ได้ โดยใส่ลิงค์ละบรรทัด)
+                        </label>
+                        <textarea 
+                            id="links" 
+                            name="links" 
+                            placeholder="https://shopee.co.th/สินค้า-ADATA-8GB-RAM-...-i.292220301.18059205913?sp_atk=...
+https://shopee.co.th/สินค้าอื่นๆ-...-i.123456789.987654321?sp_atk=..."
+                        ></textarea>
+                        <div class="help-text">
+                            <i class="fas fa-lightbulb"></i>
+                            ใส่ลิงค์ Shopee ที่ต้องการแปลง โดยใส่ลิงค์ละบรรทัด
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="convertLinks()">
+                            <i class="fas fa-magic"></i>
+                            แปลงลิงค์
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearForm()">
+                            <i class="fas fa-eraser"></i>
+                            ล้างข้อมูล
+                        </button>
+                        <button class="btn btn-success" onclick="loadSampleLinks()">
+                            <i class="fas fa-download"></i>
+                            โหลดตัวอย่าง
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading (old) -->
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>กำลังแปลงลิงค์...</p>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results" class="results-section">
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> สถิติการแปลง</h3>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalInput">0</div>
+                                <div class="stat-label">ลิงค์ที่ใส่</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalConverted">0</div>
+                                <div class="stat-label">แปลงสำเร็จ</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="conversionRate">0%</div>
+                                <div class="stat-label">อัตราความสำเร็จ</div>
+                            </div>
+                        </div>
+
+                        <div class="card-header">
+                            <h3><i class="fas fa-table"></i> ผลลัพธ์การแปลง</h3>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-list-ol"></i> ลำดับ</th>
+                                        <th><i class="fas fa-link"></i> ลิงค์ต้นฉบับ</th>
+                                        <th><i class="fas fa-compress-alt"></i> ลิงค์สั้น</th>
+                                        <th><i class="fas fa-store"></i> รหัสร้าน</th>
+                                        <th><i class="fas fa-box"></i> รหัสสินค้า</th>
+                                        <th><i class="fas fa-check-circle"></i> สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody">
+                                    <!-- Results will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="button-group" style="margin-top: 20px;">
+                            <button class="btn btn-success" onclick="copyAllResults()">
+                                <i class="fas fa-copy"></i>
+                                คัดลอกลิงค์สั้นทั้งหมด
+                            </button>
+                            <button class="btn btn-primary" onclick="exportToCSV()">
+                                <i class="fas fa-file-csv"></i>
+                                ส่งออกเป็น CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about" class="tab-content">
+                <div class="form-card">
+                    <h2><i class="fas fa-info-circle"></i> เกี่ยวกับเครื่องมือนี้</h2>
+                    
+                    <div style="line-height: 1.8; color: var(--text-secondary);">
+                        <h3 style="color: var(--text-white); margin-bottom: 15px;">
+                            <i class="fas fa-cog"></i> วิธีการทำงาน
+                        </h3>
+                        <p>เครื่องมือนี้จะแปลงลิงค์ Shopee จากรูปแบบยาวที่มีข้อความภาษาไทย (หรือภาษาอื่น) เป็นรูปแบบสั้นที่ประกอบด้วยรหัสร้านและรหัสสินค้า</p>
+                        
+                        <h3 style="color: var(--text-white); margin: 20px 0 15px 0;">
+                            <i class="fas fa-link"></i> ตัวอย่างการแปลง
+                        </h3>
+                        <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 12px; margin: 15px 0;">
+                            <p><strong>ลิงค์ต้นฉบับ:</strong></p>
+                            <p style="word-break: break-all; color: var(--primary-blue-light);">
+                                https://shopee.co.th/แรม-ADATA-8GB-RAM-...-i.292220301.18059205913?sp_atk=...
+                            </p>
+                            <p><strong>ลิงค์สั้น:</strong></p>
+                            <p style="word-break: break-all; color: #27ae60;">
+                                https://shopee.co.th/product/292220301/18059205913
+                            </p>
+                        </div>
+                        
+                        <h3 style="color: var(--text-white); margin: 20px 0 15px 0;">
+                            <i class="fas fa-lightbulb"></i> วิธีการทำด้วยตัวเอง
+                        </h3>
+                        <ol style="margin-left: 20px;">
+                            <li>มองหาเลขสองชุดที่คั่นด้วยจุดหลัง <code>.i.</code> หรือ <code>-i.</code></li>
+                            <li>เลขชุดแรกคือ <strong>รหัสร้านค้า (Shop ID)</strong></li>
+                            <li>เลขชุดที่สองคือ <strong>รหัสสินค้า (Product ID)</strong></li>
+                            <li>นำเลขสองชุดนี้มาใส่ในโครงสร้าง: <code>https://shopee.co.th/product/[SHOP_ID]/[PRODUCT_ID]</code></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 Shopee Product | Made with <i class="fas fa-heart"></i> Web Developer</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Toast Modal -->
+    <div id="toastModal" class="toast-modal">
+        <div class="toast-icon" id="toastIcon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="toast-title" id="toastTitle">สำเร็จ</div>
+        <div class="toast-message" id="toastMessage">ดำเนินการเสร็จสิ้น</div>
+        <div class="toast-actions">
+            <button class="toast-btn toast-btn-primary" onclick="closeToastModal()">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- Toast Modal Overlay -->
+    <div id="toastModalOverlay" class="toast-modal-overlay"></div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-content">
+            <div class="loading-icon"></div>
+            <div class="loading-title">กำลังแปลงลิงค์</div>
+            <div class="loading-subtitle">กรุณารอสักครู่...</div>
+            
+            <div class="progress-text" id="progressText">0%</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="loading-steps">
+                <div class="step" id="step1">วิเคราะห์ลิงค์</div>
+                <div class="step" id="step2">แยกข้อมูล</div>
+                <div class="step" id="step3">สร้างลิงค์สั้น</div>
+                <div class="step" id="step4">เสร็จสิ้น</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Convert Links Function
+        async function convertLinks() {
+            const linksText = document.getElementById('links').value.trim();
+            
+            if (!linksText) {
+                showToastModal('กรุณาใส่ลิงค์ที่ต้องการแปลง', 'error');
+                return;
+            }
+
+            const links = linksText.split('\n').filter(link => link.trim());
+            
+            if (links.length === 0) {
+                showToastModal('ไม่พบลิงค์ที่ถูกต้อง', 'error');
+                return;
+            }
+
+            // Show loading modal with progress
+            showLoadingModal();
+            document.getElementById('results').classList.remove('show');
+
+            try {
+                // Simulate progress for 10 seconds
+                await simulateProgress();
+                
+                const response = await fetch('/convert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ links: links })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data);
+                    showToastModal(`แปลงลิงค์สำเร็จ ${data.total_converted}/${data.total_input} ลิงค์`, 'success');
+                } else {
+                    showToastModal('เกิดข้อผิดพลาดในการแปลงลิงค์', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToastModal('เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
+            } finally {
+                hideLoadingModal();
+            }
+        }
+
+        // Loading Modal Functions
+        function showLoadingModal() {
+            document.getElementById('loadingModal').classList.add('show');
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function hideLoadingModal() {
+            document.getElementById('loadingModal').classList.remove('show');
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        // Simulate Progress (10 seconds)
+        async function simulateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            
+            let progress = 0;
+            const duration = 10000; // 10 seconds
+            const interval = 100; // Update every 100ms
+            const increment = (interval / duration) * 100;
+            
+            return new Promise((resolve) => {
+                const timer = setInterval(() => {
+                    progress += increment;
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(timer);
+                        resolve();
+                    }
+                    
+                    // Update progress bar
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = Math.round(progress) + '%';
+                    
+                    // Update steps
+                    if (progress >= 25) {
+                        document.getElementById('step1').classList.add('completed');
+                        document.getElementById('step2').classList.add('active');
+                    }
+                    if (progress >= 50) {
+                        document.getElementById('step2').classList.remove('active');
+                        document.getElementById('step2').classList.add('completed');
+                        document.getElementById('step3').classList.add('active');
+                    }
+                    if (progress >= 75) {
+                        document.getElementById('step3').classList.remove('active');
+                        document.getElementById('step3').classList.add('completed');
+                        document.getElementById('step4').classList.add('active');
+                    }
+                    if (progress >= 100) {
+                        document.getElementById('step4').classList.remove('active');
+                        document.getElementById('step4').classList.add('completed');
+                    }
+                }, interval);
+            });
+        }
+
+        // Display Results
+        function displayResults(data) {
+            // Update stats
+            document.getElementById('totalInput').textContent = data.total_input;
+            document.getElementById('totalConverted').textContent = data.total_converted;
+            document.getElementById('conversionRate').textContent = data.conversion_rate;
+
+            // Populate table
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+
+            data.results.forEach((result, index) => {
+                const row = document.createElement('tr');
+                row.className = result.success ? 'success' : 'error';
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="link-cell">
+                        <a href="${result.input}" target="_blank" title="${result.input}">
+                            ${result.input}
+                        </a>
+                    </td>
+                    <td class="link-cell">
+                        ${result.success ? 
+                            `<a href="${result.output}" target="_blank" title="${result.output}">
+                                ${result.output}
+                            </a>` : 
+                            '<span style="color: #e74c3c;">ไม่สามารถแปลงได้</span>'
+                        }
+                    </td>
+                    <td>${result.shop_id || '-'}</td>
+                    <td>${result.product_id || '-'}</td>
+                    <td>
+                        <span class="status-badge ${result.success ? 'status-success' : 'status-error'}">
+                            ${result.success ? 'สำเร็จ' : 'ล้มเหลว'}
+                        </span>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+
+            // Show results section
+            document.getElementById('results').classList.add('show');
+        }
+
+        // Clear Form
+        function clearForm() {
+            document.getElementById('links').value = '';
+            document.getElementById('results').classList.remove('show');
+            showToastModal('ล้างข้อมูลเรียบร้อยแล้ว', 'success');
+        }
+
+        // Load Sample Links
+        function loadSampleLinks() {
+            const sampleLinks = `https://shopee.co.th/แรม-ADATA-8GB-RAM-DDR4-3200MHz-Desktop-Memory-i.292220301.18059205913?sp_atk=abc123
+https://shopee.co.th/SSD-Samsung-970-EVO-Plus-500GB-NVMe-M.2-i.123456789.987654321?sp_atk=def456
+https://shopee.co.th/เมาส์-Gaming-Logitech-G502-HERO-i.555666777.111222333?sp_atk=ghi789`;
+            
+            document.getElementById('links').value = sampleLinks;
+            showToastModal('โหลดตัวอย่างลิงค์เรียบร้อยแล้ว', 'success');
+        }
+
+        // Copy All Results
+        function copyAllResults() {
+            const tableBody = document.getElementById('resultsTableBody');
+            const rows = tableBody.querySelectorAll('tr');
+            
+            let textToCopy = '';
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 3) {
+                    const shortLink = cells[2].textContent.trim();
+                    if (shortLink !== 'ไม่สามารถแปลงได้') {
+                        textToCopy += shortLink + '\n';
+                    }
+                }
+            });
+            
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToastModal('คัดลอกลิงค์สั้นทั้งหมดเรียบร้อยแล้ว', 'success');
+                }).catch(() => {
+                    showToastModal('ไม่สามารถคัดลอกได้', 'error');
+                });
+            } else {
+                showToastModal('ไม่มีลิงค์ที่สามารถคัดลอกได้', 'error');
+            }
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const tableBody = document.getElementById('resultsTableBody');
+            const rows = tableBody.querySelectorAll('tr');
+            
+            let csvContent = 'ลำดับ,ลิงค์ต้นฉบับ,ลิงค์สั้น,รหัสร้าน,รหัสสินค้า,สถานะ\n';
+            
+            rows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 6) {
+                    const originalLink = cells[1].textContent.trim();
+                    const shortLink = cells[2].textContent.trim();
+                    const shopId = cells[3].textContent.trim();
+                    const productId = cells[4].textContent.trim();
+                    const status = cells[5].textContent.trim();
+                    
+                    csvContent += `${index + 1},"${originalLink}","${shortLink}","${shopId}","${productId}","${status}"\n`;
+                }
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'shopee_links_converted.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToastModal('ส่งออกไฟล์ CSV เรียบร้อยแล้ว', 'success');
+        }
+
+        // Toast Modal Functions
+        function showToastModal(message, type = 'success') {
+            const modal = document.getElementById('toastModal');
+            const overlay = document.getElementById('toastModalOverlay');
+            const icon = document.getElementById('toastIcon');
+            const title = document.getElementById('toastTitle');
+            const messageEl = document.getElementById('toastMessage');
+            
+            // Set content based on type
+            if (type === 'success') {
+                modal.className = 'toast-modal success';
+                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                title.textContent = 'สำเร็จ';
+            } else if (type === 'error') {
+                modal.className = 'toast-modal error';
+                icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                title.textContent = 'เกิดข้อผิดพลาด';
+            } else {
+                modal.className = 'toast-modal info';
+                icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+                title.textContent = 'ข้อมูล';
+            }
+            
+            messageEl.textContent = message;
+            
+            // Show modal with its own overlay
+            overlay.classList.add('show');
+            modal.classList.add('show');
+        }
+
+        function closeToastModal() {
+            const modal = document.getElementById('toastModal');
+            const overlay = document.getElementById('toastModalOverlay');
+            
+            modal.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+
+        // Close modal when clicking overlay
+        document.getElementById('toastModalOverlay').addEventListener('click', function() {
+            closeToastModal();
+        });
+
+        // Toast Notification (keep for compatibility)
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 5000);
+        }
+
+        // Enter key to convert
+        document.getElementById('links').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                convertLinks();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showToastModal('ยินดีต้อนรับสู่ Shopee Link Converter!', 'success');
+        });
+    </script>
+</body>
+</html>

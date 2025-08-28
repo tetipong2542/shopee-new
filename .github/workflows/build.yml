@@ -26,7 +26,7 @@ jobs:
     
     - name: Build executable
       run: |
-        pyinstaller --onefile --windowed --name=ShopeeLinkConverter --add-data="templates;templates" main.py
+        pyinstaller --onefile --windowed --name=ShopeeLinkConverter --add-data="templates;templates" --hidden-import=flask --hidden-import=pywebview --hidden-import=jinja2 main.py
     
     - name: Upload executable
       uses: actions/upload-artifact@v3
